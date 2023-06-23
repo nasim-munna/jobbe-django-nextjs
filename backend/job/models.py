@@ -70,8 +70,12 @@ class Job(models.Model):
     company = models.CharField(max_length=100, null=True)
     # point = gismodels.PointField(default=Point(0.0, 0.0))
     lastDate = models.DateTimeField(default=return_date_time)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    
+
+    def __str__(self):
+        return self.title
 
     # def save(self, *args, **kwargs):
     #     g = geocoder.mapquest(self.address, key=os.environ.get('GEOCODER_API'))
@@ -83,6 +87,7 @@ class Job(models.Model):
 
     #     self.point = Point(lng, lat)
     #     super(Job, self).save(*args, **kwargs)
+
 
 class CandidatesApplied(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)

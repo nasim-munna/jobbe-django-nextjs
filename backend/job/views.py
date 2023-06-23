@@ -40,13 +40,16 @@ def getJob(request,pk):
     return Response({'job':serializer.data, 'candidates':candidates})
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+
 def newJob(request):
     request.data['user'] = request.user
     data = request.data
+
     job = Job.objects.create(**data)
+
     serializer = JobSerializer(job, many=False)
     return Response(serializer.data)
+
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
@@ -141,10 +144,13 @@ def getCurrentUserAppliedJob(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def isApplied(request,pk):
+def isApplied(request, pk):
+
     user = request.user
-    job = get_object_or_404(Job,id=pk)
-    applied = job.candidateapplied_set.filter(user=user).exists()
+    job = get_object_or_404(Job, id=pk)
+
+    applied = job.candidatesapplied_set.filter(user=user).exists()
+
     return Response(applied)
 
 @api_view(['GET'])
